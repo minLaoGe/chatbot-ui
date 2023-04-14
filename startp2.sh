@@ -1,1 +1,4 @@
-pm2 start npm --name "myapp" --log-date-format "YYYY-MM-DD HH:mm:ss.SSS" --output "/path/to/log/myapp-out.log" --error "/path/to/log/myapp-error.log" -- start
+#!/bin/bash
+
+echo "Starting Next.js app..."
+pm2 start ecosystem.config.js
