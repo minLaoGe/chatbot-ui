@@ -20,7 +20,7 @@ export const OPENAI_ORGANIZATION =
 export const AZURE_DEPLOYMENT_ID =
   process.env.AZURE_DEPLOYMENT_ID || '';
 
-export const REDIRECTURL=  process.env.REDIRECT_URL|| 'http://localhost:3000';
+export const REDIRECTURL=  process.env.NEXT_PUBLIC_REDIRECT_URL|| 'http://localhost:3000';
 export const CLIENTID=  process.env.CLIENT_ID|| 'sdf';
 
-export  const API_AUTH_HOST= process.env.API_AUTH_HOST|| 'http://localhost:3000';
+export  const API_AUTH_HOST= process.env.NEXT_PUBLIC_API_AUTH_HOST|| 'http://localhost:3000';
