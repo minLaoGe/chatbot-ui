@@ -1,7 +1,8 @@
 import { Message } from '@/types/chat';
 import { OpenAIModel } from '@/types/openai';
+import {openKey}  from '@/utils/app/openKey'
 
-import { AZURE_DEPLOYMENT_ID, OPENAI_API_HOST, OPENAI_API_TYPE, OPENAI_API_VERSION, OPENAI_ORGANIZATION } from '../app/const';
+import { AZURE_DEPLOYMENT_ID, OPENAI_API_HOST, OPENAI_API_TYPE, OPENAI_API_VERSION, OPENAI_ORGANIZATION,CLIENTID } from '../app/const';
 
 import {
   ParsedEvent,
@@ -29,19 +30,24 @@ export const OpenAIStream = async (
   temperature : number,
   key: string,
   messages: Message[],
+  tokenCount: number,
+  userId: string,
 ) => {
-  let url = `${OPENAI_API_HOST}/v1/chat/completions`;
+  let url = `${OPENAI_API_HOST}/v1/completions/stream`;
   if (OPENAI_API_TYPE === 'azure') {
     url = `${OPENAI_API_HOST}/openai/deployments/${AZURE_DEPLOYMENT_ID}/chat/completions?api-version=${OPENAI_API_VERSION}`;
   }
+
+  let lastKey= openKey();
   const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
+      'auth-info':  userId+"|"+CLIENTID,
       ...(OPENAI_API_TYPE === 'openai' && {
-        Authorization: `Bearer ${key ? key : process.env.OPENAI_API_KEY}`
+        Authorization: `Bearer ${key ? key : lastKey}`
       }),
       ...(OPENAI_API_TYPE === 'azure' && {
-        'api-key': `${key ? key : process.env.OPENAI_API_KEY}`
+        'api-key': `${key ? key : lastKey}`
       }),
       ...((OPENAI_API_TYPE === 'openai' && OPENAI_ORGANIZATION) && {
         'OpenAI-Organization': OPENAI_ORGANIZATION,
@@ -57,7 +63,7 @@ export const OpenAIStream = async (
         },
         ...messages,
       ],
-      max_tokens: 1000,
+      max_tokens: (model.tokenLimit-tokenCount)>1000 ? 1000: (model.tokenLimit-tokenCount),
       temperature: temperature,
       stream: true,
     }),

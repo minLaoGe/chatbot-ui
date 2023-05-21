@@ -11,7 +11,7 @@ import {
 import toast from 'react-hot-toast';
 
 import { useTranslation } from 'next-i18next';
-
+import {CLIENTID, REDIRECTURL} from '@/utils/app/const';
 import { getEndpoint } from '@/utils/app/api';
 import {
   saveConversation,
@@ -116,15 +116,22 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
           });
         }
         const controller = new AbortController();
+        const access_token=  sessionStorage.getItem("access_token") as string;
         const response = await fetch(endpoint, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'access-token':access_token
           },
           signal: controller.signal,
           body,
         });
         if (!response.ok) {
+          if (response.status===501){
+            alert("请先登录");
+            window.location.href = `http://170.106.193.82?redirect_uri=${REDIRECTURL}&client_id=${CLIENTID}`;
+            return;
+          }
           homeDispatch({ field: 'loading', value: false });
           homeDispatch({ field: 'messageIsStreaming', value: false });
           toast.error(response.statusText);

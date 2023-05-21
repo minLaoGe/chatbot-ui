@@ -27,10 +27,13 @@ const useApiService = () => {
 
   const getModels = useCallback(
     (params: GetModelsRequestProps, signal?: AbortSignal) => {
+
+      const access_token= sessionStorage.getItem("access_token") as string | ''
       return fetchService.post<GetModelsRequestProps>(`api/models`, {
         body: { key: params.key },
         headers: {
           'Content-Type': 'application/json',
+           'access-token': access_token
         },
         signal,
       });

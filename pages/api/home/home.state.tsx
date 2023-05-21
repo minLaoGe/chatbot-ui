@@ -13,6 +13,8 @@ export interface HomeInitialState {
   messageIsStreaming: boolean;
   modelError: ErrorMessage | null;
   models: OpenAIModel[];
+  login_code: string;
+  token: string;
   folders: FolderInterface[];
   conversations: Conversation[];
   selectedConversation: Conversation | undefined;
@@ -37,6 +39,8 @@ export const initialState: HomeInitialState = {
   messageIsStreaming: false,
   modelError: null,
   models: [],
+  login_code: '',
+  token: '',
   folders: [],
   conversations: [],
   selectedConversation: undefined,
