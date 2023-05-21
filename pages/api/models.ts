@@ -1,5 +1,5 @@
 import { OPENAI_API_HOST, OPENAI_API_TYPE, OPENAI_API_VERSION, OPENAI_ORGANIZATION,CLIENTID } from '@/utils/app/const';
-import {openKey}  from '@/utils/app/openKey'
+
 import {tokenToUserId} from "@/utils/server/login";
 import { OpenAIModel, OpenAIModelID, OpenAIModels } from '@/types/openai';
 
@@ -12,7 +12,7 @@ const handler = async (req: Request): Promise<Response> => {
     const { key } = (await req.json()) as {
       key: string;
     };
-    let lastKey=openKey()
+
     const access_token = req.headers.get('access-token');
     if (!access_token){
       return new Response('auth error', { status: 501 });
@@ -29,12 +29,6 @@ const handler = async (req: Request): Promise<Response> => {
       headers: {
         'Content-Type': 'application/json',
         'auth-info':  userId+"|"+CLIENTID,
-        ...(OPENAI_API_TYPE === 'openai' && {
-          Authorization: `Bearer ${key ? key : lastKey}`
-        }),
-        ...(OPENAI_API_TYPE === 'azure' && {
-          'api-key': `${key ? key :lastKey}`
-        }),
         ...((OPENAI_API_TYPE === 'openai' && OPENAI_ORGANIZATION) && {
           'OpenAI-Organization': OPENAI_ORGANIZATION,
         }),
