@@ -107,7 +107,9 @@ const Home = ({
         console.log("res=",res)
         if (res){
             const access_token = res.data;
+            const userInfo = res.userInfo
             sessionStorage.setItem("access_token",access_token)
+            sessionStorage.setItem("userInfo",userInfo)
             return true
         }
         return false;

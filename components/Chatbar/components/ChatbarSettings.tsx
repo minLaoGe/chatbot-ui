@@ -1,4 +1,4 @@
-import { IconFileExport, IconSettings } from '@tabler/icons-react';
+import { IconFileExport, IconSettings,IconUser } from '@tabler/icons-react';
 import { useContext, useState } from 'react';
 
 import { useTranslation } from 'next-i18next';
@@ -13,11 +13,15 @@ import { SidebarButton } from '../../Sidebar/SidebarButton';
 import ChatbarContext from '../Chatbar.context';
 import { ClearConversations } from './ClearConversations';
 import { PluginKeys } from './PluginKeys';
+import {SidebarUserInfo} from "@/components/Sidebar/SidebarUserInfo";
 
 export const ChatbarSettings = () => {
   const { t } = useTranslation('sidebar');
   const [isSettingDialogOpen, setIsSettingDialog] = useState<boolean>(false);
+  const [isUser, setIsUser] = useState<boolean>(false);
+  const lookUserInfo=()=>{
 
+  }
   const {
     state: {
       apiKey,
@@ -56,6 +60,12 @@ export const ChatbarSettings = () => {
         onClick={() => setIsSettingDialog(true)}
       />
 
+      <SidebarUserInfo
+        text={t('Respect')}
+        icon={<IconUser size={18} />}
+        onClick={() => {setIsSettingDialog(true);setIsUser(true)}}
+      />
+
       {!serverSideApiKeyIsSet ? (
         <Key apiKey={apiKey} onApiKeyChange={handleApiKeyChange} />
       ) : null}
@@ -64,8 +74,15 @@ export const ChatbarSettings = () => {
 
       <SettingDialog
         open={isSettingDialogOpen}
+        isUser={isUser}
         onClose={() => {
           setIsSettingDialog(false);
+          setIsUser(false)
+          if (isUser){
+                sessionStorage.removeItem("userInfo");
+                sessionStorage.removeItem("access_token");
+                window.location.reload();
+          }
         }}
       />
     </div>

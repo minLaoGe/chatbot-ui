@@ -13,9 +13,11 @@ import HomeContext from '@/pages/api/home/home.context';
 interface Props {
   open: boolean;
   onClose: () => void;
+  isUser: boolean;
+
 }
 
-export const SettingDialog: FC<Props> = ({ open, onClose }) => {
+export const SettingDialog: FC<Props> = ({ open, onClose,isUser }) => {
   const { t } = useTranslation('settings');
   const settings: Settings = getSettings();
   const { state, dispatch } = useCreateReducer<Settings>({
@@ -23,7 +25,8 @@ export const SettingDialog: FC<Props> = ({ open, onClose }) => {
   });
   const { dispatch: homeDispatch } = useContext(HomeContext);
   const modalRef = useRef<HTMLDivElement>(null);
-
+  const userInfo = sessionStorage.getItem("userInfo")||{}
+  console.log("userInfo",userInfo)
   useEffect(() => {
     const handleMouseDown = (e: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -42,11 +45,15 @@ export const SettingDialog: FC<Props> = ({ open, onClose }) => {
       window.removeEventListener('mousedown', handleMouseDown);
     };
   }, [onClose]);
+  useEffect(()=>{
+
+  },[isUser])
 
   const handleSave = () => {
     homeDispatch({ field: 'lightMode', value: state.theme });
     saveSettings(state);
   };
+
 
   // Render nothing if the dialog is not open.
   if (!open) {
@@ -69,23 +76,24 @@ export const SettingDialog: FC<Props> = ({ open, onClose }) => {
             role="dialog"
           >
             <div className="text-lg pb-4 font-bold text-black dark:text-neutral-200">
-              {t('Settings')}
+              {isUser ? '':t('Settings')}
             </div>
 
             <div className="text-sm font-bold mb-2 text-black dark:text-neutral-200">
-              {t('Theme')}
+              {isUser? <> 用户信息 <br></br><br></br></>:t('Theme')}
             </div>
-
-            <select
-              className="w-full cursor-pointer bg-transparent p-2 text-neutral-700 dark:text-neutral-200"
-              value={state.theme}
-              onChange={(event) =>
-                dispatch({ field: 'theme', value: event.target.value })
-              }
-            >
-              <option value="dark">{t('Dark mode')}</option>
-              <option value="light">{t('Light mode')}</option>
-            </select>
+            {isUser? ( <><div> 用户名称: {userInfo.user_name}</div>  </> )  :(<>
+              <select
+                  className="w-full cursor-pointer bg-transparent p-2 text-neutral-700 dark:text-neutral-200"
+                  value={state.theme}
+                  onChange={(event) =>
+                      dispatch({ field: 'theme', value: event.target.value })
+                  }
+              >
+                <option value="dark">{t('Dark mode')}</option>
+                <option value="light">{t('Light mode')}</option>
+              </select>
+            </>)}
 
             <button
               type="button"
@@ -95,7 +103,7 @@ export const SettingDialog: FC<Props> = ({ open, onClose }) => {
                 onClose();
               }}
             >
-              {t('Save')}
+              {isUser ?  '退出登陆':t('Save')}
             </button>
           </div>
         </div>

@@ -14,7 +14,7 @@ const handler = async (req: Request): Promise<Response> => {
     };
 
     const access_token = req.headers.get('access-token');
-    if (!access_token){
+    if (!access_token||'undefined'===access_token){
       return new Response('auth error', { status: 501 });
     }
     let url = `${OPENAI_API_HOST}/v1/models`;
@@ -22,7 +22,7 @@ const handler = async (req: Request): Promise<Response> => {
       url = `${OPENAI_API_HOST}/openai/deployments?api-version=${OPENAI_API_VERSION}`;
     }
     let userId = tokenToUserId(access_token);
-    if (!userId){
+    if (!userId||undefined===userId){
       return new Response('Error', { status: 501 });
     }
     const response = await fetch(url, {
