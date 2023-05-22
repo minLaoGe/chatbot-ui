@@ -25,3 +25,4 @@ export const CLIENTID=  process.env.NEXT_PUBLIC_CLIENT_ID|| 'sdf';
 
 export  const API_AUTH_HOST= process.env.API_AUTH_HOST|| 'http://localhost:3000';
 export  const LOGIN_URL= process.env.NEXT_PUBLIC_LOGIN_URL;
+export  const API_SECREATE= process.env.API_SECREATE;

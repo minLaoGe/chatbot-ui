@@ -1,4 +1,4 @@
-import { Plugin, PluginID } from '@/types/plugin';
+import {Plugin, PluginID} from '@/types/plugin';
 import {CLIENTID} from "@/utils/app/const";
 
 export const getEndpoint = (plugin: Plugin | null) => {
@@ -11,6 +11,9 @@ export const getEndpoint = (plugin: Plugin | null) => {
   }
   if (plugin.id === PluginID.LOGIN) {
     return 'api/login';
+  }
+  if (plugin.id === PluginID.COUNT){
+      return 'api/count'
   }
 
   return 'api/chat';

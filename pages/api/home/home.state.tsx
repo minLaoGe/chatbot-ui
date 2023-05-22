@@ -18,6 +18,7 @@ export interface HomeInitialState {
     login_code: string;
     token: string;
     userInfo: UserInfo|undefined;
+    leftCount: number|0;
     folders: FolderInterface[];
     conversations: Conversation[];
     selectedConversation: Conversation | undefined;
@@ -36,6 +37,7 @@ export interface HomeInitialState {
 
 export const initialState: HomeInitialState = {
     apiKey: '',
+    leftCount: 0,
     loading: false,
     pluginKeys: [],
     lightMode: 'dark',

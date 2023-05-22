@@ -27,6 +27,7 @@ import HomeContext from '@/pages/api/home/home.context';
 import { PluginSelect } from './PluginSelect';
 import { PromptList } from './PromptList';
 import { VariableModal } from './VariableModal';
+import {red} from "kleur/colors";
 
 interface Props {
   onSend: (message: Message, plugin: Plugin | null) => void;
@@ -35,6 +36,7 @@ interface Props {
   stopConversationRef: MutableRefObject<boolean>;
   textareaRef: MutableRefObject<HTMLTextAreaElement | null>;
   showScrollDownButton: boolean;
+  leftCount: number;
 }
 
 export const ChatInput = ({
@@ -44,6 +46,7 @@ export const ChatInput = ({
   stopConversationRef,
   textareaRef,
   showScrollDownButton,
+   leftCount,
 }: Props) => {
   const { t } = useTranslation('chat');
 
@@ -391,7 +394,8 @@ export const ChatInput = ({
         .{' '}
         {t(
           "Floating Cloud is an advanced chatbot kit for OpenAI's chat models aiming to mimic ChatGPT's interface and functionality.",
-        )}
+        ) }        <span style={{'color': 'red'}}>剩余额度: {leftCount}</span>
+
       </div>
     </div>
   );

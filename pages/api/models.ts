@@ -18,7 +18,7 @@ const handler = async (req: Request): Promise<Response> => {
     if (!access_token||'undefined'===access_token){
       return new Response('auth error', { status: 501 });
     }
-    let url = `${OPENAI_API_HOST}/v1/models`;
+    let url = `${OPENAI_API_HOST}/openAI/v1/models`;
     if (OPENAI_API_TYPE === 'azure') {
       url = `${OPENAI_API_HOST}/openai/deployments?api-version=${OPENAI_API_VERSION}`;
     }

@@ -45,6 +45,7 @@ import {Plugins} from "@/types/plugin";
 import {getEndpoint} from "@/utils/app/api";
 import toast from "react-hot-toast";
 import {logout} from "@/utils/common";
+import {myPostFetch} from "@/utils/app/http";
 
 interface Props {
     serverSideApiKeyIsSet: boolean;
@@ -75,6 +76,7 @@ const Home = ({
             conversations,
             selectedConversation,
             prompts,
+            leftCount,
             temperature,
             token,
             login_code,
@@ -121,6 +123,7 @@ const Home = ({
                 }
                 sessionStorage.setItem("userInfo",JSON.stringify(userInfoEntity))
 
+
                 dispatch({field: 'userInfo', value: userInfoEntity});
             }
             return true
@@ -128,6 +131,28 @@ const Home = ({
             console.log("请重新登录")
         }
         return false;
+    }
+    const handleCount = async () => {
+
+        const count= Plugins.count;
+        const endpoint = getEndpoint(count);
+
+        const access_token = sessionStorage.getItem("access_token");
+        let body = JSON.stringify({nihao: 'sdf'});
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'access-token': access_token
+            },
+            body
+        });
+
+        let respon =await  response.json();
+        console.log("放回次数:",respon.data)
+        dispatch({ field: 'leftCount', value:  respon.data })
+
+
     }
     const {data, error, refetch} = useQuery(
         ['GetModels', apiKey, serverSideApiKeyIsSet],
@@ -168,6 +193,7 @@ const Home = ({
               }
 
           }
+          handleCount();
       }
         console.log("fentchData=====")
         fentchData();
@@ -464,7 +490,7 @@ const Home = ({
                         <Chatbar/>
 
                         <div className="flex flex-1">
-                            <Chat stopConversationRef={stopConversationRef}/>
+                            <Chat handleCount={handleCount} stopConversationRef={stopConversationRef}/>
                         </div>
 
                         <Promptbar/>

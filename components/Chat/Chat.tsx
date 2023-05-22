@@ -36,9 +36,10 @@ import { MemoizedChatMessage } from './MemoizedChatMessage';
 
 interface Props {
   stopConversationRef: MutableRefObject<boolean>;
+  handleCount: ()=>void;
 }
 
-export const Chat = memo(({ stopConversationRef }: Props) => {
+export const Chat = memo(({ stopConversationRef,handleCount} : Props) => {
   const { t } = useTranslation('chat');
 
   const {
@@ -52,6 +53,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
       messageIsStreaming,
       modelError,
       loading,
+        leftCount,
       prompts,
     },
     handleUpdateConversation,
@@ -219,6 +221,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
           homeDispatch({ field: 'conversations', value: updatedConversations });
           saveConversations(updatedConversations);
           homeDispatch({ field: 'messageIsStreaming', value: false });
+
         } else {
           const { answer } = await response.json();
           const updatedMessages: Message[] = [
@@ -250,6 +253,8 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
           homeDispatch({ field: 'loading', value: false });
           homeDispatch({ field: 'messageIsStreaming', value: false });
         }
+        handleCount()
+
       }
     },
     [
@@ -498,6 +503,7 @@ export const Chat = memo(({ stopConversationRef }: Props) => {
 
           <ChatInput
             stopConversationRef={stopConversationRef}
+            leftCount = {leftCount}
             textareaRef={textareaRef}
             onSend={(message, plugin) => {
               setCurrentMessage(message);

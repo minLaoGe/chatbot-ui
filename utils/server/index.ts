@@ -32,7 +32,7 @@ export const OpenAIStream = async (
   tokenCount: number,
   userId: string,
 ) => {
-  let url = `${OPENAI_API_HOST}/v1/completions/stream`;
+  let url = `${OPENAI_API_HOST}/openAI/v1/completions/stream`;
   if (OPENAI_API_TYPE === 'azure') {
     url = `${OPENAI_API_HOST}/openai/deployments/${AZURE_DEPLOYMENT_ID}/chat/completions?api-version=${OPENAI_API_VERSION}`;
   }
