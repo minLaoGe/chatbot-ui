@@ -129,7 +129,7 @@ const Home = ({
                 sessionStorage.setItem("userInfo",JSON.stringify(userInfoEntity))
 
                 dispatch({field: 'userInfo', value: userInfoEntity});
-                handleCount();
+
             }
             return true
         }else if (501==response.status)  {
@@ -184,6 +184,7 @@ const Home = ({
               userInfoobj=JSON.parse(userInfoEntity)
               dispatch({field: 'userInfo', value: userInfoobj})
           }
+
           // 如果本地存储中没有 login_code，尝试从 URL 的查询参数中获取
           if (!access_token||!userInfoobj) {
               const queryLoginCode:string = router.query.code as string;
@@ -192,18 +193,22 @@ const Home = ({
                   const success= await handleLogin(queryLoginCode)
                   if (success){
                       //兑换token
-
+                      handleCount();
                   }
               }else {
                   logout()
               }
 
+          }else {
+                  console.log("count= ",leftCount)
+                  handleCount();
           }
+
 
       }
         console.log("fentchData=====")
         fentchData();
-    }, [data, dispatch]);
+    }, []);
     useEffect(() => {
         if (data) dispatch({field: 'models', value: data});
     }, [data, dispatch]);
