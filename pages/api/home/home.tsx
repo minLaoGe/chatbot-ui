@@ -187,7 +187,7 @@ const Home = ({
                   const success= await handleLogin(queryLoginCode)
                   if (success){
                       //兑换token
-                      return;
+
                   }
               }else {
                   logout()
