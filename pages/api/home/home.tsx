@@ -137,14 +137,15 @@ const Home = ({
         const count= Plugins.count;
         const endpoint = getEndpoint(count);
 
-        const access_token = sessionStorage.getItem("access_token");
+        const access_token = sessionStorage.getItem("access_token")||undefined;
         let body = JSON.stringify({nihao: 'sdf'});
+        // @ts-ignore
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'access-token': access_token
-            },
+            } as HeadersInit,
             body
         });
 
