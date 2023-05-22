@@ -38,11 +38,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         }
         console.log("access_token=",access_token)
 
-        let userInfo: string = await tokenTouserInfo(access_token);
-        if (userInfo){
+        const userInfoRes = await fetch(
+            `${API_AUTH_HOST}queryUserInfo`,{
+                headers: {
+                    'Content-Type': 'application/json',
+                    'access-token': access_token
+                },
+                method: 'GET'
+            }
+        );
+
+        const userInfoDto = await userInfoRes.json();
+        const userInfo=userInfoDto.data
+        console.log("userInfo=",userInfo)
+        if (userInfo.id){
             userInfo.password= ''
             userInfo.uuid=''
             userInfo.id= ''
+        }else {
+        return    res.status(501).json({ error: 'Error'})
         }
         console.log("userInfo=",userInfo)
         res.status(200).json({ data: access_token, userInfo:  userInfo });

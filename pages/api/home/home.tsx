@@ -44,6 +44,7 @@ import {v4 as uuidv4} from 'uuid';
 import {Plugins} from "@/types/plugin";
 import {getEndpoint} from "@/utils/app/api";
 import toast from "react-hot-toast";
+import {logout} from "@/utils/common";
 
 interface Props {
     serverSideApiKeyIsSet: boolean;
@@ -76,7 +77,8 @@ const Home = ({
             prompts,
             temperature,
             token,
-            login_code
+            login_code,
+            userInfo
         },
         dispatch,
     } = contextValue;
@@ -110,7 +112,19 @@ const Home = ({
             const userInfo = res.userInfo
             sessionStorage.setItem("access_token",access_token)
             sessionStorage.setItem("userInfo",userInfo)
+            if (userInfo.user_name) {
+                const userInfoEntity = {
+                    id: userInfo.id,
+                    name: userInfo.user_name,
+                    nickname: userInfo.nick_name,
+                    email: userInfo.email,
+                    phone: userInfo.phone
+                }
+                dispatch({field: 'userInfo', value: userInfoEntity});
+            }
             return true
+        }else if (501==response.status)  {
+            console.log("请重新登录")
         }
         return false;
     }
@@ -144,7 +158,7 @@ const Home = ({
                       return;
                   }
               }else {
-                  window.location.href = `http://170.106.193.82?redirect_uri=${REDIRECTURL}&client_id=${CLIENTID}`;
+                  logout()
               }
 
           }

@@ -6,6 +6,7 @@ import { useTranslation } from 'next-i18next';
 import HomeContext from '@/pages/api/home/home.context';
 
 import { SettingDialog } from '@/components/Settings/SettingDialog';
+import {logout} from "@/utils/common";
 
 import { Import } from '../../Settings/Import';
 import { Key } from '../../Settings/Key';
@@ -25,6 +26,7 @@ export const ChatbarSettings = () => {
   const {
     state: {
       apiKey,
+       userInfo,
       lightMode,
       serverSideApiKeyIsSet,
       serverSidePluginKeysSet,
@@ -61,7 +63,7 @@ export const ChatbarSettings = () => {
       />
 
       <SidebarUserInfo
-        text={t('Respect')}
+        text={t('Respect')+userInfo?.nickname}
         icon={<IconUser size={18} />}
         onClick={() => {setIsSettingDialog(true);setIsUser(true)}}
       />
@@ -73,16 +75,13 @@ export const ChatbarSettings = () => {
       {!serverSidePluginKeysSet ? <PluginKeys /> : null}
 
       <SettingDialog
+        userInfo={userInfo}
         open={isSettingDialogOpen}
         isUser={isUser}
         onClose={() => {
           setIsSettingDialog(false);
           setIsUser(false)
-          if (isUser){
-                sessionStorage.removeItem("userInfo");
-                sessionStorage.removeItem("access_token");
-                window.location.reload();
-          }
+
         }}
       />
     </div>

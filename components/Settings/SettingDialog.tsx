@@ -9,15 +9,17 @@ import { getSettings, saveSettings } from '@/utils/app/settings';
 import { Settings } from '@/types/settings';
 
 import HomeContext from '@/pages/api/home/home.context';
+import {UserInfo} from "@/types/user";
+import {logout} from "@/utils/common";
 
 interface Props {
   open: boolean;
   onClose: () => void;
   isUser: boolean;
-
+  userInfo: UserInfo|undefined;
 }
 
-export const SettingDialog: FC<Props> = ({ open, onClose,isUser }) => {
+export const SettingDialog: FC<Props> = ({ open, onClose,isUser,userInfo }) => {
   const { t } = useTranslation('settings');
   const settings: Settings = getSettings();
   const { state, dispatch } = useCreateReducer<Settings>({
@@ -25,8 +27,6 @@ export const SettingDialog: FC<Props> = ({ open, onClose,isUser }) => {
   });
   const { dispatch: homeDispatch } = useContext(HomeContext);
   const modalRef = useRef<HTMLDivElement>(null);
-  const userInfo = sessionStorage.getItem("userInfo")||{}
-  console.log("userInfo",userInfo)
   useEffect(() => {
     const handleMouseDown = (e: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -82,7 +82,13 @@ export const SettingDialog: FC<Props> = ({ open, onClose,isUser }) => {
             <div className="text-sm font-bold mb-2 text-black dark:text-neutral-200">
               {isUser? <> 用户信息 <br></br><br></br></>:t('Theme')}
             </div>
-            {isUser? ( <><div> 用户名称: {userInfo.user_name}</div>  </> )  :(<>
+            {isUser? ( <>
+              <div>名称: {userInfo?.nickname||''}</div>
+              <div>登录账号: {userInfo?.name||''}</div>
+              <div> 手机号: {userInfo?.phone||''}</div>
+              <div> 邮箱: {userInfo?.email||''}</div>
+
+            </> )  :(<>
               <select
                   className="w-full cursor-pointer bg-transparent p-2 text-neutral-700 dark:text-neutral-200"
                   value={state.theme}
@@ -101,6 +107,11 @@ export const SettingDialog: FC<Props> = ({ open, onClose,isUser }) => {
               onClick={() => {
                 handleSave();
                 onClose();
+                  if (isUser){
+                    sessionStorage.removeItem("userInfo");
+                    sessionStorage.removeItem("access_token");
+                    logout();
+                  }
               }}
             >
               {isUser ?  '退出登陆':t('Save')}
