@@ -109,8 +109,13 @@ const Home = ({
 
         const res=  await response.json();
         console.log("res=",res)
+        const access_token = res.data;
+        if (!access_token){
+            alert("获取用户信息失败, 请重新登录")
+            logout();
+            return;
+        }
         if (res){
-            const access_token = res.data;
             const userInfo = res.userInfo
             sessionStorage.setItem("access_token",access_token)
             if (userInfo.user_name) {
@@ -122,7 +127,6 @@ const Home = ({
                     phone: userInfo.phone
                 }
                 sessionStorage.setItem("userInfo",JSON.stringify(userInfoEntity))
-
 
                 dispatch({field: 'userInfo', value: userInfoEntity});
                 handleCount();
@@ -199,7 +203,7 @@ const Home = ({
       }
         console.log("fentchData=====")
         fentchData();
-    }, []);
+    }, [data, dispatch]);
     useEffect(() => {
         if (data) dispatch({field: 'models', value: data});
     }, [data, dispatch]);

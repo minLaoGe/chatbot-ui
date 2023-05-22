@@ -29,6 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         );
 
         const authJsonData = await authRes.json();
+        console.log("换取token:",authJsonData)
         let access_token = '';
 
         if (authJsonData.data){
@@ -45,8 +46,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
                 method: 'GET'
             }
         );
-
         const userInfoDto = await userInfoRes.json();
+        console.log("获取用户信息:",userInfoDto)
+
         const userInfo=userInfoDto.data
         if (userInfo.id){
             userInfo.password= ''
