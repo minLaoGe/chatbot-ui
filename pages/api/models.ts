@@ -14,6 +14,7 @@ const handler = async (req: Request): Promise<Response> => {
     };
 
     const access_token = req.headers.get('access-token');
+    console.log("modles.ts:access_token=",access_token);
     if (!access_token||'undefined'===access_token){
       return new Response('auth error', { status: 501 });
     }
@@ -22,9 +23,10 @@ const handler = async (req: Request): Promise<Response> => {
       url = `${OPENAI_API_HOST}/openai/deployments?api-version=${OPENAI_API_VERSION}`;
     }
     let userId = tokenToUserId(access_token);
-    if (!userId||undefined===userId){
+    if (!userId){
       return new Response('Error', { status: 501 });
     }
+    console.log("userID,ClientID=",userId,CLIENTID)
     const response = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',

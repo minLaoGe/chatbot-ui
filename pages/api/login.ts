@@ -3,8 +3,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { REDIRECTURL,API_AUTH_HOST,CLIENTID } from '@/utils/app/const';
 
 import { LoginBody } from '@/types/login';
-import {tokenTouserInfo} from "@/utils/server/login";
-import {object} from "prop-types";
 
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
@@ -50,7 +48,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
 
         const userInfoDto = await userInfoRes.json();
         const userInfo=userInfoDto.data
-        console.log("userInfo=",userInfo)
         if (userInfo.id){
             userInfo.password= ''
             userInfo.uuid=''
