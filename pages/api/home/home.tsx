@@ -125,6 +125,7 @@ const Home = ({
 
 
                 dispatch({field: 'userInfo', value: userInfoEntity});
+                handleCount();
             }
             return true
         }else if (501==response.status)  {
@@ -194,7 +195,7 @@ const Home = ({
               }
 
           }
-          handleCount();
+
       }
         console.log("fentchData=====")
         fentchData();
