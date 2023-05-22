@@ -63,7 +63,7 @@ export const ChatbarSettings = () => {
       />
 
       <SidebarUserInfo
-        text={t('Respect')+userInfo?.nickname}
+        text={t('Respect')+userInfo?.nickname||'用户'}
         icon={<IconUser size={18} />}
         onClick={() => {setIsSettingDialog(true);setIsUser(true)}}
       />

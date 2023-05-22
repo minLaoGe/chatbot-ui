@@ -111,7 +111,6 @@ const Home = ({
             const access_token = res.data;
             const userInfo = res.userInfo
             sessionStorage.setItem("access_token",access_token)
-            sessionStorage.setItem("userInfo",userInfo)
             if (userInfo.user_name) {
                 const userInfoEntity = {
                     id: userInfo.id,
@@ -120,6 +119,8 @@ const Home = ({
                     email: userInfo.email,
                     phone: userInfo.phone
                 }
+                sessionStorage.setItem("userInfo",JSON.stringify(userInfoEntity))
+
                 dispatch({field: 'userInfo', value: userInfoEntity});
             }
             return true
@@ -146,9 +147,14 @@ const Home = ({
       const fentchData= async ()=>{
           // 尝试从本地存储中获取 login_code
           let access_token = sessionStorage.getItem('access_token');
-
+          const userInfoEntity = sessionStorage.getItem("userInfo");
+          let userInfoobj = {}
+          if (userInfoEntity){
+              userInfoobj=JSON.parse(userInfoEntity)
+              dispatch({field: 'userInfo', value: userInfoobj})
+          }
           // 如果本地存储中没有 login_code，尝试从 URL 的查询参数中获取
-          if (!access_token) {
+          if (!access_token||!userInfoobj) {
               const queryLoginCode:string = router.query.code as string;
 
               if (queryLoginCode) {
@@ -163,6 +169,7 @@ const Home = ({
 
           }
       }
+        console.log("fentchData=====")
         fentchData();
     }, []);
     useEffect(() => {
