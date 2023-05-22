@@ -22,7 +22,7 @@ const handler = async (req: Request): Promise<Response> => {
     if (OPENAI_API_TYPE === 'azure') {
       url = `${OPENAI_API_HOST}/openai/deployments?api-version=${OPENAI_API_VERSION}`;
     }
-    let userId = tokenToUserId(access_token);
+    let userId = await tokenToUserId(access_token);
     if (!userId){
       return new Response('Error', { status: 501 });
     }
