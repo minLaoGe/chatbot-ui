@@ -8,6 +8,7 @@ import {
   ReconnectInterval,
   createParser,
 } from 'eventsource-parser';
+import {getRandomKey} from "@/utils/app/openKey";
 
 export class OpenAIError extends Error {
   type: string;
@@ -34,11 +35,13 @@ export const OpenAIStream = async (
   if (OPENAI_API_TYPE === 'azure') {
     url = `${OPENAI_API_HOST}/openai/deployments/${AZURE_DEPLOYMENT_ID}/chat/completions?api-version=${OPENAI_API_VERSION}`;
   }
+  const lastKey = getRandomKey();
+  console.log("lastKey =",lastKey)
   const res = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
       ...(OPENAI_API_TYPE === 'openai' && {
-        Authorization: `Bearer ${key ? key : process.env.OPENAI_API_KEY}`
+        Authorization: `Bearer ${key ? key : lastKey}`
       }),
       ...(OPENAI_API_TYPE === 'azure' && {
         'api-key': `${key ? key : process.env.OPENAI_API_KEY}`
