@@ -478,7 +478,7 @@ const Home = ({
             }}
         >
             <Head>
-                <title>CChina Chat GPT</title>
+                <title>Floating Cloud</title>
                 <meta name="description" content="ChatGPT but better."/>
                 <meta
                     name="viewport"
