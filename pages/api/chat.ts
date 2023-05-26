@@ -76,7 +76,7 @@ const handler = async (req: Request): Promise<Response> => {
     }else {
       return new Response('Error', { status: 500, statusText: "授权出错" });
     }
-    const stream = await OpenAIStream(model, promptToSend, temperatureToUse, key, messagesToSend,tokenCount,userInfo.data.id);
+    const stream = await OpenAIStream(model, promptToSend, temperatureToUse, key, messagesToSend,tokenCount,userInfo.data.uuid);
     return new Response(stream);
   } catch (error) {
     console.error(error);

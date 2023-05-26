@@ -50,10 +50,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         console.log("获取用户信息:",userInfoDto)
 
         const userInfo=userInfoDto.data
-        if (userInfo.id){
+        if (userInfo.uuid){
             userInfo.password= ''
             userInfo.uuid=''
-            userInfo.id= ''
         }else {
         return    res.status(501).json({ error: 'Error'})
         }

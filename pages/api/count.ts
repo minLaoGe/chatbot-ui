@@ -7,7 +7,7 @@ import {
     API_SECREATE, API_AUTH_HOST
 } from '@/utils/app/const';
 
-import {getNowDate, tokenToUserId} from "@/utils/server/login";
+import {getNowDate, tokenToUserUUID} from "@/utils/server/login";
 import { OpenAIModel, OpenAIModelID, OpenAIModels } from '@/types/openai';
 
 export const config = {
@@ -27,14 +27,14 @@ const handler = async (req: Request): Promise<Response> => {
         }
         let url=`${OPENAI_API_HOST}/openai/getLeftCount`
         console.log("请求的路径:",url)
-        let userId = await tokenToUserId(access_token);
-        if (!userId){
+        let tokenToUseruuid = await tokenToUserUUID(access_token);
+        if (!tokenToUseruuid){
             return new Response('Error', { status: 501 });
         }
-        console.log("count;userID,ClientID=",userId,CLIENTID)
+        console.log("count;userUUID,ClientID=",tokenToUseruuid,CLIENTID)
 
         const body= JSON.stringify({
-            userId: userId,
+            userUUID: tokenToUseruuid,
             clientId: CLIENTID,
             secreateKey: getNowDate()+API_SECREATE,
         })

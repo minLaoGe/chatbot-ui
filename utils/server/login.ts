@@ -1,7 +1,7 @@
 import {API_AUTH_HOST} from "@/utils/app/const";
 
 
-export  const tokenToUserId= async (access_token: string)=>{
+export  const tokenToUserUUID= async (access_token: string)=>{
     const userInfoRes = await fetch(
         `${API_AUTH_HOST}queryUserInfo`,{
             headers: {
@@ -13,7 +13,7 @@ export  const tokenToUserId= async (access_token: string)=>{
     );
 
     const userInfo = await userInfoRes.json();
-    return userInfo.data.id
+    return userInfo.data.uuid
 }
 
 export  const tokenTouserInfo= async (access_token: string)=>{

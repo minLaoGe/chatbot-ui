@@ -81,6 +81,10 @@ export const OpenAIStream = async (
       );
     }
   }
+  const errorResult = await res.json();
+  if (errorResult!=='10000'){
+    return JSON.stringify(errorResult)
+  }
 
   const stream = new ReadableStream({
     async start(controller) {

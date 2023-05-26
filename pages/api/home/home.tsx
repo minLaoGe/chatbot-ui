@@ -120,7 +120,7 @@ const Home = ({
             sessionStorage.setItem("access_token",access_token)
             if (userInfo.user_name) {
                 const userInfoEntity = {
-                    id: userInfo.id,
+                    uuid: userInfo.uuid,
                     name: userInfo.user_name,
                     nickname: userInfo.nick_name,
                     email: userInfo.email,
@@ -134,6 +134,7 @@ const Home = ({
             return true
         }else if (501==response.status)  {
             console.log("请重新登录")
+            logout()
         }
         return false;
     }

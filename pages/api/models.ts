@@ -1,6 +1,6 @@
 import { OPENAI_API_HOST, OPENAI_API_TYPE, OPENAI_API_VERSION, OPENAI_ORGANIZATION,CLIENTID } from '@/utils/app/const';
 
-import {tokenToUserId} from "@/utils/server/login";
+import {tokenToUserUUID} from "@/utils/server/login";
 import { OpenAIModel, OpenAIModelID, OpenAIModels } from '@/types/openai';
 
 export const config = {
@@ -22,15 +22,15 @@ const handler = async (req: Request): Promise<Response> => {
     if (OPENAI_API_TYPE === 'azure') {
       url = `${OPENAI_API_HOST}/openai/deployments?api-version=${OPENAI_API_VERSION}`;
     }
-    let userId = await tokenToUserId(access_token);
-    if (!userId){
+    let tokenToUseruuid = await tokenToUserUUID(access_token);
+    if (!tokenToUserUUID){
       return new Response('Error', { status: 501 });
     }
-    console.log("userID,ClientID=",userId,CLIENTID)
+    console.log("userID,ClientID=",tokenToUseruuid,CLIENTID)
     const response = await fetch(url, {
       headers: {
         'Content-Type': 'application/json',
-        'auth-info':  userId+"|"+CLIENTID,
+        'auth-info':  tokenToUseruuid+"|"+CLIENTID,
         ...((OPENAI_API_TYPE === 'openai' && OPENAI_ORGANIZATION) && {
           'OpenAI-Organization': OPENAI_ORGANIZATION,
         }),
