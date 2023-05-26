@@ -161,6 +161,7 @@ export const Chat = memo(({ stopConversationRef,handleCount} : Props) => {
           let done = false;
           let isFirst = true;
           let text = '';
+          handleCount()
           while (!done) {
             if (stopConversationRef.current === true) {
               controller.abort();
@@ -253,7 +254,7 @@ export const Chat = memo(({ stopConversationRef,handleCount} : Props) => {
           homeDispatch({ field: 'loading', value: false });
           homeDispatch({ field: 'messageIsStreaming', value: false });
         }
-        handleCount()
+
 
       }
     },

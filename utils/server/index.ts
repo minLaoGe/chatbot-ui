@@ -81,9 +81,12 @@ export const OpenAIStream = async (
       );
     }
   }
-  const errorResult = await res.json();
-  if (errorResult!=='10000'){
-    return JSON.stringify(errorResult)
+  const contentType = res.headers.get('Content-Type');
+  if (contentType && contentType.startsWith('application/json')) {
+    // 如果返回的不是流文件，则获取结果字符串
+    const result = await res.json();
+    console.log("非响应流文件=",result);  // 在这里打印结果
+    return JSON.stringify(result);
   }
 
   const stream = new ReadableStream({

@@ -10,7 +10,7 @@ import { Settings } from '@/types/settings';
 
 import HomeContext from '@/pages/api/home/home.context';
 import {UserInfo} from "@/types/user";
-import {logout} from "@/utils/common";
+import {logout, modify} from "@/utils/common";
 
 interface Props {
   open: boolean;
@@ -116,6 +116,17 @@ export const SettingDialog: FC<Props> = ({ open, onClose,isUser,userInfo }) => {
             >
               {isUser ?  '退出登陆':t('Save')}
             </button>
+
+            {isUser ? ( <button
+                type="button"
+                className="w-full px-4 py-2 mt-1 border rounded-lg shadow border-neutral-500 text-neutral-900 hover:bg-neutral-100 focus:outline-none dark:border-neutral-800 dark:border-opacity-50 dark:bg-white dark:text-black dark:hover:bg-neutral-300"
+                onClick={() => {
+                  modify();
+                }}
+            >
+              修改密码
+            </button>): ""}
+
           </div>
         </div>
       </div>

@@ -4,3 +4,7 @@ export const logout=()=>{
     sessionStorage.clear();
     window.location.href = `${LOGIN_URL}?redirect_uri=${REDIRECTURL}&client_id=${CLIENTID}`;
 }
+export const modify=()=>{
+    sessionStorage.clear();
+    window.location.href = `${LOGIN_URL}/ResetPassword?redirect_uri=${REDIRECTURL}&client_id=${CLIENTID}`;
+}
