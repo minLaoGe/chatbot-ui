@@ -1,6 +1,6 @@
 # Contributing Guidelines
 
-**Welcome to CChina Chat GPT !**
+**Welcome to Six Degrees of Separation Chat GPT  !**
 
 We appreciate your interest in contributing to our project.
 

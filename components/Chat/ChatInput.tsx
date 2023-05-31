@@ -386,11 +386,11 @@ export const ChatInput = ({
           rel="noreferrer"
           className="underline"
         >
-          CChina Chat GPT 
+          Six Degrees of Separation Chat GPT  
         </a>
         .{' '}
         {t(
-          "CChina Chat GPT  is an advanced chatbot kit for OpenAI's chat models aiming to mimic ChatGPT's interface and functionality.",
+          "Six Degrees of Separation Chat GPT   is an advanced chatbot kit for OpenAI's chat models aiming to mimic ChatGPT's interface and functionality.",
         )}
       </div>
     </div>

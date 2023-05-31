@@ -1,6 +1,6 @@
 # Google Search Tool
 
-Use the Google Search API to search the web in CChina Chat GPT .
+Use the Google Search API to search the web in Six Degrees of Separation Chat GPT  .
 
 ## How To Enable
 
