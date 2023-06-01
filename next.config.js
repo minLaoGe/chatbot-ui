@@ -1,6 +1,6 @@
 const { i18n } = require('./next-i18next.config');
 function getBasePath() {
-  return '/huang/cchina'
+  return '/sixDesign'
 }
 /** @type {import('next').NextConfig} */
 const nextConfig = {
