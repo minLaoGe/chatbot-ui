@@ -18,5 +18,15 @@ export const updatePrompt = (updatedPrompt: Prompt, allPrompts: Prompt[]) => {
 };
 
 export const savePrompts = (prompts: Prompt[]) => {
-  localStorage.setItem('prompts', JSON.stringify(prompts));
+  const userInfo = sessionStorage.getItem("userInfo");
+  const obj = JSON.parse(userInfo);
+  const user_uuid = obj.uuid;
+  localStorage.setItem('prompts'+user_uuid, JSON.stringify(prompts));
+};
+
+export const getPrompts = () => {
+  const userInfo = sessionStorage.getItem("userInfo");
+  const obj = JSON.parse(userInfo);
+  const user_uuid = obj.uuid;
+ return  localStorage.getItem('prompts'+user_uuid);
 };

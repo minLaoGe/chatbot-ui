@@ -5,7 +5,7 @@ import { useTranslation } from 'next-i18next';
 import { useCreateReducer } from '@/hooks/useCreateReducer';
 
 import { DEFAULT_SYSTEM_PROMPT, DEFAULT_TEMPERATURE } from '@/utils/app/const';
-import { saveConversation, saveConversations } from '@/utils/app/conversation';
+import {removeConversation, removeConversations, saveConversation, saveConversations} from '@/utils/app/conversation';
 import { saveFolders } from '@/utils/app/folders';
 import { exportData, importData } from '@/utils/app/importExport';
 
@@ -128,8 +128,8 @@ export const Chatbar = () => {
 
     homeDispatch({ field: 'conversations', value: [] });
 
-    localStorage.removeItem('conversationHistory');
-    localStorage.removeItem('selectedConversation');
+    removeConversations()
+    removeConversation()
 
     const updatedFolders = folders.filter((f) => f.type !== 'chat');
 
@@ -168,7 +168,7 @@ export const Chatbar = () => {
           },
         });
 
-      localStorage.removeItem('selectedConversation');
+      removeConversation()
     }
   };
 

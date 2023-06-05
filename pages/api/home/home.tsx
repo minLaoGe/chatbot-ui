@@ -18,12 +18,14 @@ import {
 } from '@/utils/app/clean';
 import {DEFAULT_SYSTEM_PROMPT, DEFAULT_TEMPERATURE} from '@/utils/app/const';
 import {
+    getConversation,
+    getConversations,
     saveConversation,
     saveConversations,
     updateConversation,
 } from '@/utils/app/conversation';
 import {saveFolders} from '@/utils/app/folders';
-import {savePrompts} from '@/utils/app/prompts';
+import {getPrompts, savePrompts} from '@/utils/app/prompts';
 import {getSettings} from '@/utils/app/settings';
 
 import {ChatBody, Conversation, Message} from '@/types/chat';
@@ -175,41 +177,38 @@ const Home = ({
         },
         {enabled: true, refetchOnMount: false},
     );
-    useEffect(() => {
-      const fentchData= async ()=>{
-          // 尝试从本地存储中获取 login_code
-          let access_token = sessionStorage.getItem('access_token');
-          const userInfoEntity = sessionStorage.getItem("userInfo");
-          let userInfoobj = {}
-          if (userInfoEntity){
-              userInfoobj=JSON.parse(userInfoEntity)
-              dispatch({field: 'userInfo', value: userInfoobj})
-          }
+    const fentchData= async ()=>{
+        // 尝试从本地存储中获取 login_code
+        let access_token = sessionStorage.getItem('access_token');
+        const userInfoEntity = sessionStorage.getItem("userInfo");
+        let userInfoobj = {}
+        if (userInfoEntity){
+            userInfoobj=JSON.parse(userInfoEntity)
+            dispatch({field: 'userInfo', value: userInfoobj})
+        }
 
-          // 如果本地存储中没有 login_code，尝试从 URL 的查询参数中获取
-          if (!access_token||!userInfoobj) {
-              const queryLoginCode:string = router.query.code as string;
+        // 如果本地存储中没有 login_code，尝试从 URL 的查询参数中获取
+        if (!access_token||!userInfoobj) {
+            const queryLoginCode:string = router.query.code as string;
 
-              if (queryLoginCode) {
-                  const success= await handleLogin(queryLoginCode)
-                  if (success){
-                      //兑换token
-                      handleCount();
-                  }
-              }else {
-                  logout()
-              }
+            if (queryLoginCode) {
+                const success= await handleLogin(queryLoginCode)
+                if (success){
+                    //兑换token
+                    handleCount();
+                }
+            }else {
+                logout()
+            }
 
-          }else {
-                  console.log("count= ",leftCount)
-                  handleCount();
-          }
+        }else {
+            console.log("count= ",leftCount)
+            handleCount();
+        }
 
 
-      }
-        console.log("fentchData=====")
-        fentchData();
-    }, []);
+    }
+
     useEffect(() => {
         if (data) dispatch({field: 'models', value: data});
     }, [data, dispatch]);
@@ -368,10 +367,11 @@ const Home = ({
     }, [defaultModelId, serverSideApiKeyIsSet, serverSidePluginKeysSet]);
 
     // ON LOAD --------------------------------------------
-
     useEffect(() => {
-        const settings = getSettings();
-        if (settings.theme) {
+        const abc=async ()=>{
+            await  fentchData();
+            const settings = getSettings();
+            if (settings.theme) {
             dispatch({
                 field: 'lightMode',
                 value: settings.theme,
@@ -416,12 +416,16 @@ const Home = ({
             dispatch({field: 'folders', value: JSON.parse(folders)});
         }
 
-        const prompts = localStorage.getItem('prompts');
+        const prompts = getPrompts();
         if (prompts) {
             dispatch({field: 'prompts', value: JSON.parse(prompts)});
         }
 
-        const conversationHistory = localStorage.getItem('conversationHistory');
+
+
+
+
+        const conversationHistory = getConversations();
         if (conversationHistory) {
             const parsedConversationHistory: Conversation[] =
                 JSON.parse(conversationHistory);
@@ -432,7 +436,8 @@ const Home = ({
             dispatch({field: 'conversations', value: cleanedConversationHistory});
         }
 
-        const selectedConversation = localStorage.getItem('selectedConversation');
+
+        const selectedConversation = getConversation();
         if (selectedConversation) {
             const parsedSelectedConversation: Conversation =
                 JSON.parse(selectedConversation);
@@ -459,6 +464,8 @@ const Home = ({
                 },
             });
         }
+        }
+        abc();
     }, [
         defaultModelId,
         dispatch,

@@ -11,6 +11,8 @@ import { FolderInterface } from '@/types/folder';
 import { Prompt } from '@/types/prompt';
 
 import { cleanConversationHistory } from './clean';
+import {getPrompts, savePrompts} from "@/utils/app/prompts";
+import {getConversations, removeConversation, saveConversation, saveConversations} from "@/utils/app/conversation";
 
 export function isExportFormatV1(obj: any): obj is ExportFormatV1 {
   return Array.isArray(obj);
@@ -72,9 +74,9 @@ function currentDate() {
 }
 
 export const exportData = () => {
-  let history = localStorage.getItem('conversationHistory');
+  let history = getConversations();
   let folders = localStorage.getItem('folders');
-  let prompts = localStorage.getItem('prompts');
+  let prompts =getPrompts();
 
   if (history) {
     history = JSON.parse(history);
@@ -114,7 +116,7 @@ export const importData = (
 ): LatestExportFormat => {
   const { history, folders, prompts } = cleanData(data);
 
-  const oldConversations = localStorage.getItem('conversationHistory');
+  const oldConversations = getConversations();
   const oldConversationsParsed = oldConversations
     ? JSON.parse(oldConversations)
     : [];
@@ -126,14 +128,11 @@ export const importData = (
     (conversation, index, self) =>
       index === self.findIndex((c) => c.id === conversation.id),
   );
-  localStorage.setItem('conversationHistory', JSON.stringify(newHistory));
+  saveConversations(newHistory);
   if (newHistory.length > 0) {
-    localStorage.setItem(
-      'selectedConversation',
-      JSON.stringify(newHistory[newHistory.length - 1]),
-    );
+    saveConversation(newHistory[newHistory.length - 1])
   } else {
-    localStorage.removeItem('selectedConversation');
+    removeConversation();
   }
 
   const oldFolders = localStorage.getItem('folders');
@@ -147,13 +146,13 @@ export const importData = (
   );
   localStorage.setItem('folders', JSON.stringify(newFolders));
 
-  const oldPrompts = localStorage.getItem('prompts');
+  const oldPrompts = getPrompts();
   const oldPromptsParsed = oldPrompts ? JSON.parse(oldPrompts) : [];
   const newPrompts: Prompt[] = [...oldPromptsParsed, ...prompts].filter(
     (prompt, index, self) =>
       index === self.findIndex((p) => p.id === prompt.id),
   );
-  localStorage.setItem('prompts', JSON.stringify(newPrompts));
+  savePrompts(newPrompts);
 
   return {
     version: 4,

@@ -52,7 +52,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
         const userInfo=userInfoDto.data
         if (userInfo.uuid){
             userInfo.password= ''
-            userInfo.uuid=''
         }else {
         return    res.status(501).json({ error: 'Error'})
         }
