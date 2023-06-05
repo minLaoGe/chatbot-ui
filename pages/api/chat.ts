@@ -22,7 +22,7 @@ const handler = async (req: Request): Promise<Response> => {
       return new Response('Error', { status: 501,statusText: "授权错误" });
     }
 
-    const { model, messages, key, prompt, temperature } = (await req.json()) as ChatBody;
+    const { model, messages, key, prompt, temperature,conversationId } = (await req.json()) as ChatBody;
 
     await init((imports) => WebAssembly.instantiate(wasm, imports));
     const encoding = new Tiktoken(
@@ -76,7 +76,7 @@ const handler = async (req: Request): Promise<Response> => {
     }else {
       return new Response('Error', { status: 500, statusText: "授权出错" });
     }
-    const stream = await OpenAIStream(model, promptToSend, temperatureToUse, key, messagesToSend,tokenCount,userInfo.data.uuid);
+    const stream = await OpenAIStream(model, promptToSend, temperatureToUse, key, messagesToSend,tokenCount,userInfo.data.uuid,conversationId);
     return new Response(stream);
   } catch (error) {
     console.error(error);

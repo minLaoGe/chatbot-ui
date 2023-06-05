@@ -28,7 +28,7 @@ const handler = async (req: Request): Promise<Response> => {
         let url=`${OPENAI_API_HOST}/openai/getLeftCount`
         console.log("请求的路径:",url)
         let tokenToUseruuid = await tokenToUserUUID(access_token);
-        if (!tokenToUseruuid){
+        if (!tokenToUseruuid||undefined===tokenToUseruuid){
             return new Response('Error', { status: 501 });
         }
         console.log("count;userUUID,ClientID=",tokenToUseruuid,CLIENTID)

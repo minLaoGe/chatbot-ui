@@ -73,6 +73,7 @@ export const Chat = memo(({ stopConversationRef,handleCount} : Props) => {
   const handleSend = useCallback(
     async (message: Message, deleteCount = 0, plugin: Plugin | null = null) => {
       if (selectedConversation) {
+        const conversationId= selectedConversation.id;
         let updatedConversation: Conversation;
         if (deleteCount) {
           const updatedMessages = [...selectedConversation.messages];
@@ -101,6 +102,7 @@ export const Chat = memo(({ stopConversationRef,handleCount} : Props) => {
           key: apiKey,
           prompt: updatedConversation.prompt,
           temperature: updatedConversation.temperature,
+          conversationId: conversationId,
         };
         const endpoint = getEndpoint(plugin);
         let body;

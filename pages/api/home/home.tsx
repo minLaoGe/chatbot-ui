@@ -144,7 +144,6 @@ const Home = ({
 
         const count= Plugins.count;
         const endpoint = getEndpoint(count);
-
         const access_token = sessionStorage.getItem("access_token")||undefined;
         let body = JSON.stringify({nihao: 'sdf'});
         // @ts-ignore
@@ -157,6 +156,10 @@ const Home = ({
             body
         });
 
+        if (response.status===501){
+            alert("超时，请重新登录")
+            logout();
+        }
         let respon =await  response.json();
         console.log("放回次数:",respon.data)
         dispatch({ field: 'leftCount', value:  respon.data })

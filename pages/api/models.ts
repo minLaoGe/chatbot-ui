@@ -23,7 +23,7 @@ const handler = async (req: Request): Promise<Response> => {
       url = `${OPENAI_API_HOST}/openai/deployments?api-version=${OPENAI_API_VERSION}`;
     }
     let tokenToUseruuid = await tokenToUserUUID(access_token);
-    if (!tokenToUserUUID){
+    if (!tokenToUserUUID||undefined===tokenToUseruuid){
       return new Response('Error', { status: 501 });
     }
     console.log("userID,ClientID=",tokenToUseruuid,CLIENTID)
