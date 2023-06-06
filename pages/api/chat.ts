@@ -70,11 +70,11 @@ const handler = async (req: Request): Promise<Response> => {
     );
 
     const userInfo = await userInfoRes.json();
-    if (userInfo){
+    if (userInfo&&userInfo.data&&userInfo.data.uuid){
       userInfo.authorization_code='';
       userInfo.password='';
     }else {
-      return new Response('Error', { status: 500, statusText: "授权出错" });
+      return new Response('Error', { status: 501, statusText: "授权出错" });
     }
     const stream = await OpenAIStream(model, promptToSend, temperatureToUse, key, messagesToSend,tokenCount,userInfo.data.uuid,conversationId);
     return new Response(stream);
