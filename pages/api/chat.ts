@@ -71,6 +71,7 @@ const handler = async (req: Request): Promise<Response> => {
 
     const userInfo = await userInfoRes.json();
     if (userInfo&&userInfo.data&&userInfo.data.uuid){
+      console.log("userId=",userInfo.data.uuid,"请求chat地址")
       userInfo.authorization_code='';
       userInfo.password='';
     }else {
