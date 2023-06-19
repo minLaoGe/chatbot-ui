@@ -82,12 +82,12 @@ export const Shopping: FC<Props> = ({open, onClose}) => {
                         />
 
                         <div
-                            className=" dark:border-netural-400 inline-block max-h-[1080px] transform overflow-y-auto rounded-lg border  bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all  sm:my-8 sm:max-h-[1920px] sm:w-8/12  sm:p-6 sm:align-middle"
+                            className=" dark:border-netural-400 inline-block max-h-[400px] transform overflow-y-auto rounded-lg border  bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all  sm:my-8 sm:max-h-[1920px] sm:w-8/12  sm:p-6 sm:align-middle"
                             role="dialog"
                         >
 
 
-                            {!isOpen?  <div ref={modalRef} className="flex max-h-[1080px] overflow-y-auto  justify-center flex-wrap bg-white  -m-4">
+                            {!isOpen?  <div ref={modalRef} className="flex max-h-[800px] overflow-y-auto  justify-center flex-wrap bg-white  -m-4">
                                 {productList.map((product, index) => (
                                     <div key={product.id} className=" p-4  text-black items-center text-center">
                                         <div className="h-full  p-6 rounded-lg shadow-md">
