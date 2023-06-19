@@ -70,8 +70,8 @@ export const ShoppingDetail: FC<Props> = ({productid,onClose}) => {
                alert("支付成功,请刷新页面")
            }else if (!pendingList.includes(data.totoStatus)){
                closeAll();
+               setQrAddress('')
                alert("支付失败")
-
            }
         }
     }

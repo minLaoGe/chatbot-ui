@@ -83,10 +83,10 @@ export const SettingDialog: FC<Props> = ({ open, onClose,isUser,userInfo }) => {
               {isUser? <> 用户信息 <br></br><br></br></>:t('Theme')}
             </div>
             {isUser? ( <>
-              <div>名称: {userInfo?.nickname||''}</div>
-              <div>登录账号: {userInfo?.name||''}</div>
-              <div> 手机号: {userInfo?.phone||''}</div>
-              <div> 邮箱: {userInfo?.email||''}</div>
+              <div >名称: {userInfo?.nickname||''}</div>
+              <div >登录账号: {userInfo?.name||''}</div>
+              <div > 手机号: {userInfo?.phone||''}</div>
+              <div > 邮箱: {userInfo?.email||''}</div>
 
             </> )  :(<>
               <select

@@ -82,7 +82,7 @@ export const Shopping: FC<Props> = ({open, onClose}) => {
                         />
 
                         <div
-
+                            style={{ maxHeight: '1080px' }}
                             className=" dark:border-netural-400 inline-block max-h-[400px] transform overflow-y-auto rounded-lg border  bg-white px-4 pt-5 pb-4 text-left align-bottom shadow-xl transition-all  sm:my-8 sm:max-h-[1920px] sm:w-8/12  sm:p-6 sm:align-middle"
                             role="dialog"
                         >
