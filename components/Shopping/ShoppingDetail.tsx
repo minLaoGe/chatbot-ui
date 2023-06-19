@@ -223,7 +223,10 @@ export const ShoppingDetail: FC<Props> = ({productid,onClose}) => {
                 </div>: ''}
                 {/* 关闭图标 */}
                 <div className="absolute top-0 right-0 p-2">
-                    <IconX  size={50} className='text-black' onClick={onClose} />
+                    <IconX  size={50} className='text-black' onClick={()=>{
+                            closeAll();
+                            onClose();
+                        }} />
                 </div>
 
 
