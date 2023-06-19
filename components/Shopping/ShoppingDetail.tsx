@@ -208,7 +208,7 @@ export const ShoppingDetail: FC<Props> = ({productid,onClose}) => {
                                    </div>
                                </>
                            ): (<>
-                               请使用{payName}扫描下方二维码付款,2分钟后关闭订单,订单号:{orderId}：
+                               请使用{payName}扫描下方二维码付款,2分钟后自动关闭订单,订单号:{orderId}：
                                <div className="mt-10">
                                    <QRCode value={qrAddress} size={300} />
                                    <div className="text-black mt-5" onClick={()=>{
