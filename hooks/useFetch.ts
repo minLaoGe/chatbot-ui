@@ -21,18 +21,22 @@ export const useFetch = () => {
         ? { ...request, body: request.body }
         : { ...request, body: JSON.stringify(request.body) }
       : request;
-
+    const access_token = sessionStorage.getItem("access_token");
     const headers = {
       ...(request?.headers
         ? request.headers
         : request?.body && request.body instanceof FormData
         ? {}
-        : { 'Content-type': 'application/json' }),
+        : {
+        'Content-type': 'application/json',
+                'access-token': access_token,
+                'client-id': 'sdf'
+      }),
     };
-
     return fetch(requestUrl, { ...requestBody, headers, signal })
       .then((response) => {
         if (!response.ok) throw response;
+
 
         const contentType = response.headers.get('content-type');
         const contentDisposition = response.headers.get('content-disposition');
@@ -48,9 +52,17 @@ export const useFetch = () => {
             ? response.blob()
             : response;
 
-        return result;
-      })
+        return result
+      }).then(res =>{
+          console.log("请求返回参数：",res)
+          if (res.code&&res.code!=='10000'){
+            alert(res.message);
+            return {};
+          }
+          return res
+        })
       .catch(async (err) => {
+        console.error(err)
         const contentType = err.headers.get('content-type');
 
         const errResult =

@@ -1,4 +1,4 @@
-import { IconFileExport, IconSettings,IconUser } from '@tabler/icons-react';
+import { IconFileExport, IconSettings,IconUser,IconBuildingStore } from '@tabler/icons-react';
 import { useContext, useState } from 'react';
 
 import { useTranslation } from 'next-i18next';
@@ -6,6 +6,7 @@ import { useTranslation } from 'next-i18next';
 import HomeContext from '@/pages/api/home/home.context';
 
 import { SettingDialog } from '@/components/Settings/SettingDialog';
+import { Shopping } from '@/components/Shopping/Shopping';
 import {logout} from "@/utils/common";
 
 import { Import } from '../../Settings/Import';
@@ -19,6 +20,7 @@ import {SidebarUserInfo} from "@/components/Sidebar/SidebarUserInfo";
 export const ChatbarSettings = () => {
   const { t } = useTranslation('sidebar');
   const [isSettingDialogOpen, setIsSettingDialog] = useState<boolean>(false);
+  const [isSettingShoppingDialogOpen, setIsShoppingSettingDialog] = useState<boolean>(false);
   const [isUser, setIsUser] = useState<boolean>(false);
   const lookUserInfo=()=>{
 
@@ -62,6 +64,12 @@ export const ChatbarSettings = () => {
         onClick={() => setIsSettingDialog(true)}
       />
 
+      <SidebarButton
+        text={t('Shopping')}
+        icon={<IconBuildingStore size={18} />}
+        onClick={() => setIsShoppingSettingDialog(true)}
+      />
+
       <SidebarUserInfo
         text={t('Respect')+userInfo?.nickname||'用户'}
         icon={<IconUser size={18} />}
@@ -84,6 +92,12 @@ export const ChatbarSettings = () => {
 
         }}
       />
+        <Shopping
+            open={isSettingShoppingDialogOpen}
+            onClose={() => {
+                setIsShoppingSettingDialog(false);
+            }}
+        />
     </div>
   );
 };
