@@ -16,31 +16,34 @@ export const config = {
 
 const handler = async (req: Request): Promise<Response> => {
     try {
-        const { key } = (await req.json()) as {
-            key: string;
+        const { uuid,clientId} = (await req.json()) as {
+            uuid: string;
+            clientId: string;
         };
 
         const access_token = req.headers.get('access-token');
         console.log("modles.ts:access_token=",access_token);
-        if (!access_token||'undefined'===access_token){
+        if (!access_token||'undefined'===access_token||!uuid){
             return new Response('auth error', { status: 501 });
         }
         let url=`${OPENAI_API_HOST}/openai/getLeftCount`
-        console.log("请求的路径:",url)
-        let tokenToUseruuid = await tokenToUserUUID(access_token);
-        if (!tokenToUseruuid||undefined===tokenToUseruuid){
-            return new Response('Error', { status: 501 });
-        }
-        console.log("count;userUUID,ClientID=",tokenToUseruuid,CLIENTID)
-
+        // console.log("请求的路径:",url)
+        // let tokenToUseruuid = await tokenToUserUUID(access_token);
+        // if (!tokenToUseruuid||undefined===tokenToUseruuid){
+        //     return new Response('Error', { status: 501 });
+        // }
+        // console.log("count;userUUID,ClientID=",tokenToUseruuid,CLIENTID)
+        //
         const body= JSON.stringify({
-            userUUID: tokenToUseruuid,
+            userUUID: uuid,
             clientId: CLIENTID,
             secreateKey: getNowDate()+API_SECREATE,
         })
         const response = await fetch(url, {
             headers: {
                 'Content-Type': 'application/json',
+                'access-token': access_token,
+                'client-id': clientId
             },
             method: 'POST',
             body,

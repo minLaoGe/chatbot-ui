@@ -145,13 +145,21 @@ const Home = ({
         const count= Plugins.count;
         const endpoint = getEndpoint(count);
         const access_token = sessionStorage.getItem("access_token")||undefined;
-        let body = JSON.stringify({nihao: 'sdf'});
+        const userInfoEntity = sessionStorage.getItem("userInfo");
+        let uuid='';
+        if (userInfoEntity){
+            uuid=  JSON.parse(userInfoEntity).uuid;
+        }
+        if (userInfo){
+            uuid=userInfo.uuid;
+        }
+        let body = JSON.stringify({uuid: uuid,clientId: CLIENTID});
         // @ts-ignore
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'access-token': access_token
+                'access-token': access_token,
             } as HeadersInit,
             body
         });
